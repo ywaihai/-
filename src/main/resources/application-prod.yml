@@ -1,0 +1,11 @@
+#线上配置文佳
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://8.130.46.242:3306/user_center
+    username: online
+    password: 1433223ycX@
+  session:
+    timeout: 86400
+server:
+  port: 8080
