@@ -4,19 +4,19 @@ spring:
     name: user-center
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/waihai
-    username: root
-    password: 1433223ycX@
+    url: 
+    username: 
+    password: 
   session:
     timeout: 120
     store-type: redis
 
   data:
     redis:
-      port: 6379
-      host: localhost
-      database: 1
-      password: 123456
+      port: 
+      host: 
+      database: 
+      password: 
 
 server:
   port: 8080
@@ -70,5 +70,5 @@ knife4j:
   #是否启用登录认证
   basic:
     enable: true
-    username: waihai
-    password: 1433223
+    username: 
+    password: 
