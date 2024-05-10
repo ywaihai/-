@@ -1,7 +1,7 @@
 package com.waihai.usercenter.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.waihai.usercenter.model.request.User;
+import com.waihai.usercenter.model.User;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;

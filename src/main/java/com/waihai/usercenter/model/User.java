@@ -1,4 +1,4 @@
-package com.waihai.usercenter.model.request;
+package com.waihai.usercenter.model;
 
 import com.baomidou.mybatisplus.annotation.*;
 

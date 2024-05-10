@@ -1,6 +1,6 @@
 //package com.waihai.usercenter.service;
 //
-//import com.waihai.usercenter.model.request.User;
+//import com.waihai.usercenter.model.User;
 //import jakarta.annotation.Resource;
 //import org.junit.jupiter.api.Test;
 //import org.springframework.boot.test.context.SpringBootTest;

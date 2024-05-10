@@ -1,7 +1,7 @@
 //package com.waihai.usercenter.once;
 //
 //import com.waihai.usercenter.mapper.UserMapper;
-//import com.waihai.usercenter.model.request.User;
+//import com.waihai.usercenter.model.User;
 //import jakarta.annotation.Resource;
 //import org.springframework.scheduling.annotation.Scheduled;
 //import org.springframework.stereotype.Component;

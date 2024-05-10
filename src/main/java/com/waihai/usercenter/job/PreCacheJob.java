@@ -3,7 +3,7 @@ package com.waihai.usercenter.job;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.waihai.usercenter.model.request.User;
+import com.waihai.usercenter.model.User;
 import com.waihai.usercenter.service.UserService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,6 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -34,7 +33,7 @@ public class PreCacheJob {
     // 只对重要数据进行缓存
     private List<Long> mainUserList = Arrays.asList(1L);
 
-    @Scheduled(cron = "0 57 20 * * *") // 测试时间自行修改
+    @Scheduled(cron = "0 34 20 * * *") // 测试时间自行修改
     public void doCacheRecommendUser() {
         RLock rlock = redissonClient.getLock("waihai:preCacheJob:doCacheRecommendUser:lock");
 

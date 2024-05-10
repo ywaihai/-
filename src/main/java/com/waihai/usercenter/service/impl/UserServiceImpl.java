@@ -8,7 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import com.waihai.usercenter.common.ErrorCode;
 import com.waihai.usercenter.exception.BusinessException;
 import com.waihai.usercenter.mapper.UserMapper;
-import com.waihai.usercenter.model.request.User;
+import com.waihai.usercenter.model.User;
 import com.waihai.usercenter.service.UserService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
