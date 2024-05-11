@@ -3,7 +3,7 @@ package com.waihai.usercenter.job;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.waihai.usercenter.model.User;
+import com.waihai.usercenter.model.domin.User;
 import com.waihai.usercenter.service.UserService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;

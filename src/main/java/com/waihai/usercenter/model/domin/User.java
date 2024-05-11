@@ -1,4 +1,4 @@
-package com.waihai.usercenter.model;
+package com.waihai.usercenter.model.domin;
 
 import com.baomidou.mybatisplus.annotation.*;
 

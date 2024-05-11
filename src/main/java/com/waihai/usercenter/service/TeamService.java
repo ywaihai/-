@@ -1,8 +1,8 @@
 package com.waihai.usercenter.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.waihai.usercenter.model.Team;
-import com.waihai.usercenter.model.User;
+import com.waihai.usercenter.model.domin.Team;
+import com.waihai.usercenter.model.domin.User;
 
 /**
 * @author 外害

@@ -1,6 +1,6 @@
 package com.waihai.usercenter.service;
 
-import com.waihai.usercenter.model.User;
+import com.waihai.usercenter.model.domin.User;
 import jakarta.annotation.Resource;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;

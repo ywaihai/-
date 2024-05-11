@@ -3,7 +3,7 @@ package com.waihai.usercenter.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.waihai.usercenter.mapper.UserTeamMapper;
-import com.waihai.usercenter.model.UserTeam;
+import com.waihai.usercenter.model.domin.UserTeam;
 import com.waihai.usercenter.service.UserTeamService;
 import org.springframework.stereotype.Service;
 

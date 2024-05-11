@@ -1,6 +1,6 @@
 //package com.waihai.usercenter.service;
 //
-//import com.waihai.usercenter.model.User;
+//import com.waihai.usercenter.model.domin.User;
 //import jakarta.annotation.Resource;
 //import lombok.extern.slf4j.Slf4j;
 //import org.junit.jupiter.api.Assertions;

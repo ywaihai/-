@@ -4,15 +4,14 @@ import com.waihai.usercenter.common.BaseResponse;
 import com.waihai.usercenter.common.ErrorCode;
 import com.waihai.usercenter.common.ResultUtils;
 import com.waihai.usercenter.exception.BusinessException;
-import com.waihai.usercenter.model.Team;
-import com.waihai.usercenter.model.User;
+import com.waihai.usercenter.model.domin.Team;
+import com.waihai.usercenter.model.domin.User;
 import com.waihai.usercenter.model.request.TeamAddRequest;
 import com.waihai.usercenter.service.TeamService;
 import com.waihai.usercenter.service.UserService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 

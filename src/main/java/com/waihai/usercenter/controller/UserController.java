@@ -7,7 +7,7 @@ import com.waihai.usercenter.common.BaseResponse;
 import com.waihai.usercenter.common.ErrorCode;
 import com.waihai.usercenter.common.ResultUtils;
 import com.waihai.usercenter.exception.BusinessException;
-import com.waihai.usercenter.model.User;
+import com.waihai.usercenter.model.domin.User;
 import com.waihai.usercenter.model.request.UserLoginRequest;
 import com.waihai.usercenter.model.request.UserRegisterRequest;
 import com.waihai.usercenter.service.UserService;

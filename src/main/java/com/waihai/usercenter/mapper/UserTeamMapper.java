@@ -2,7 +2,7 @@ package com.waihai.usercenter.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.waihai.usercenter.model.UserTeam;
+import com.waihai.usercenter.model.domin.UserTeam;
 
 /**
 * @author 外害

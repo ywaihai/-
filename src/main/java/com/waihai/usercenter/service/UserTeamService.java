@@ -2,7 +2,7 @@ package com.waihai.usercenter.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.waihai.usercenter.model.UserTeam;
+import com.waihai.usercenter.model.domin.UserTeam;
 
 /**
 * @author 外害
