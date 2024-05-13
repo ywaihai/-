@@ -1,16 +1,22 @@
 package com.waihai.usercenter.service.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.waihai.usercenter.common.ErrorCode;
 import com.waihai.usercenter.exception.BusinessException;
 import com.waihai.usercenter.mapper.TeamMapper;
 import com.waihai.usercenter.model.domin.Team;
 import com.waihai.usercenter.model.domin.User;
+import com.waihai.usercenter.model.domin.UserTeam;
 import com.waihai.usercenter.model.enums.TeamStatusEnum;
 import com.waihai.usercenter.service.TeamService;
+import com.waihai.usercenter.service.UserTeamService;
+import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Optional;
@@ -23,8 +29,10 @@ import java.util.Optional;
 @Service
 public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team>
         implements TeamService {
+    @Resource
+    private UserTeamService userTeamService;
 
-
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public long addTeam(Team team, User loginUser) {
         //1. 请求参数是否为空？
@@ -59,12 +67,12 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team>
         int status = Optional.ofNullable(team.getStatus()).orElse(0);
         TeamStatusEnum teamStatusEnum = TeamStatusEnum.getEnumByValue(status);
         if (teamStatusEnum == null) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "队伍状态设置错误");
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "队伍状态错误");
         }
 
         //   5. 如果 status 是加密状态，一定要有密码，且密码 <= 32
         String password = team.getPassword();
-        if (teamStatusEnum == TeamStatusEnum.SECRET) {
+        if (TeamStatusEnum.SECRET.equals(teamStatusEnum)) {
             if (StringUtils.isBlank(password) || password.length() > 32) {
                 throw new BusinessException(ErrorCode.PARAMS_ERROR, "密码设置错误");
             }
@@ -76,13 +84,36 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team>
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "超时时间 < 当前时间");
         }
 
-        //   7. 校验用户最多创建 5 个队伍
-
+        //   7. 校验用户最多创建 5
+        // todo 有 bug，可能同时创建 100 个队伍
+        long userId = loginUser.getId();
+        QueryWrapper<Team> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userId", userId);
+        long count = this.count(queryWrapper);
+        if (count >= 5) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户创建队伍数量超过最大限制");
+        }
 
         //4. 插入队伍信息到队伍表
-        //5. 插入用户  => 队伍关系到关系表
+        team.setId(null);
+        team.setUserId(userId);
+        boolean save = this.save(team);
+        Long teamId = team.getId();
+        if (!save || teamId == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "队伍创建失败");
+        }
 
-        return 0;
+        //5. 插入用户  => 队伍关系到关系表
+        UserTeam userTeam = new UserTeam();
+        userTeam.setTeamId(teamId);
+        userTeam.setUserId(userId);
+        userTeam.setJoinTime(new Date());
+        save = userTeamService.save(userTeam);
+        if (!save) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "创建队伍失败");
+        }
+
+        return teamId;
     }
 }
 
