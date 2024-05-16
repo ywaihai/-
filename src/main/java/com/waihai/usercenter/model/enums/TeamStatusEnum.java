@@ -23,8 +23,10 @@ public enum TeamStatusEnum {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
 
+        // 获取一个包含所有 TeamStatusEnum 枚举常量的数组。
         TeamStatusEnum[] values = TeamStatusEnum.values();
         for (TeamStatusEnum teamStatusEnum : values) {
+            // 调用生成的 getter 方法获取 value
             if (value == teamStatusEnum.getValue()) {
                 return teamStatusEnum;
             }
@@ -38,13 +40,5 @@ public enum TeamStatusEnum {
 
     public String getStatus() {
         return status;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 }

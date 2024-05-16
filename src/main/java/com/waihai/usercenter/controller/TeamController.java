@@ -15,7 +15,6 @@ import com.waihai.usercenter.service.UserService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -83,7 +82,7 @@ public class TeamController {
         }
         Team team = new Team();
         BeanUtils.copyProperties(team, teamQuery);
-        Page<Team> page = new Page<>(teamQuery.getPageNumber(), teamQuery.getPageSize());
+        Page<Team> page = new Page<>(teamQuery.getPageNum(), teamQuery.getPageSize());
         QueryWrapper<Team> queryWrapper = new QueryWrapper<>();
 
         Page<Team> resultPage = teamService.page(page, queryWrapper);

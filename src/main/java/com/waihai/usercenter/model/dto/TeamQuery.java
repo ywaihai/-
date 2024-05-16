@@ -1,8 +1,9 @@
 package com.waihai.usercenter.model.dto;
 
+import com.waihai.usercenter.common.PageRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.data.domain.PageRequest;
+
 
 import java.util.List;
 
