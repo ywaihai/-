@@ -10,6 +10,7 @@ import com.waihai.usercenter.model.domin.Team;
 import com.waihai.usercenter.model.domin.User;
 import com.waihai.usercenter.model.dto.TeamQuery;
 import com.waihai.usercenter.model.request.TeamAddRequest;
+import com.waihai.usercenter.model.vo.TeamUserVO;
 import com.waihai.usercenter.service.TeamService;
 import com.waihai.usercenter.service.UserService;
 import jakarta.annotation.Resource;
@@ -63,16 +64,21 @@ public class TeamController {
         return ResultUtils.success(true);
     }
 
+    /**
+     * 搜索队伍
+     *
+     * @param teamQuery
+     * @return
+     */
     @GetMapping("/list")
-    public BaseResponse<List<Team>> listTeams(@RequestBody TeamQuery teamQuery) {
+    public BaseResponse<List<TeamUserVO>> listTeams(@RequestBody TeamQuery teamQuery, HttpServletRequest request) {
         if (teamQuery == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        Team team = new Team();
-        BeanUtils.copyProperties(team, teamQuery);
-        QueryWrapper<Team> queryWrapper = new QueryWrapper<>(team);
-        List<Team> teamList = teamService.list(queryWrapper);
-        return ResultUtils.success(teamList);
+        User loginUser = userService.getLoginUser(request);
+        boolean isAdmin = userService.isAdmin(loginUser);
+        List<TeamUserVO> teamUserVOList = teamService.listTeams(teamQuery, isAdmin);
+        return ResultUtils.success(teamUserVOList);
     }
 
     @GetMapping("/list/page")
