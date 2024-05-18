@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.waihai.usercenter.model.domin.Team;
 import com.waihai.usercenter.model.domin.User;
 import com.waihai.usercenter.model.dto.TeamQuery;
+import com.waihai.usercenter.model.request.TeamJoinRequest;
+import com.waihai.usercenter.model.request.TeamUpdateRequest;
 import com.waihai.usercenter.model.vo.TeamUserVO;
 
 import java.util.List;
@@ -15,6 +17,13 @@ import java.util.List;
 */
 public interface TeamService extends IService<Team> {
 
+    /**
+     * 查询队伍
+     *
+     * @param teamQuery
+     * @param isAdmin
+     * @return
+     */
     List<TeamUserVO> listTeams(TeamQuery teamQuery, boolean isAdmin);
 
     /**
@@ -25,4 +34,22 @@ public interface TeamService extends IService<Team> {
      * @return
      */
     long addTeam(Team team, User loginUser);
+
+    /**
+     * 更新队伍
+     *
+     * @param team
+     * @param loginUser
+     * @return
+     */
+    boolean updateTeam(TeamUpdateRequest team, User loginUser);
+
+    /**
+     * 加入队伍
+     *
+     * @param team
+     * @param loginUser
+     * @return
+     */
+    boolean joinTeam(TeamJoinRequest team, User loginUser);
 }

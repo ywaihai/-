@@ -10,6 +10,8 @@ import com.waihai.usercenter.model.domin.Team;
 import com.waihai.usercenter.model.domin.User;
 import com.waihai.usercenter.model.dto.TeamQuery;
 import com.waihai.usercenter.model.request.TeamAddRequest;
+import com.waihai.usercenter.model.request.TeamJoinRequest;
+import com.waihai.usercenter.model.request.TeamUpdateRequest;
 import com.waihai.usercenter.model.vo.TeamUserVO;
 import com.waihai.usercenter.service.TeamService;
 import com.waihai.usercenter.service.UserService;
@@ -53,14 +55,48 @@ public class TeamController {
         return ResultUtils.success(teamId);
     }
 
+    /**
+     * 更新队伍
+     *
+     * @param team
+     * @param request
+     * @return
+     */
     @PostMapping("/update")
-    public BaseResponse<Boolean> updateTeam(@RequestBody Team team) {
+    public BaseResponse<Boolean> updateTeam(@RequestBody TeamUpdateRequest team, HttpServletRequest request) {
         if (team == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        boolean result = teamService.updateById(team);
+        if (request == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        User loginUser = userService.getLoginUser(request);
+        boolean result = teamService.updateTeam(team, loginUser);
         if (!result) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "更新失败");
+        }
+        return ResultUtils.success(true);
+    }
+
+    /**
+     * 加入队伍
+     *
+     * @param team
+     * @param request
+     * @return
+     */
+    @PostMapping("/join")
+    public BaseResponse<Boolean> joinTeam(@RequestBody TeamJoinRequest team, HttpServletRequest request) {
+        if (team == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        if (request == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        User loginUser = userService.getLoginUser(request);
+        boolean result = teamService.joinTeam(team, loginUser);
+        if (!result) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "加入失败");
         }
         return ResultUtils.success(true);
     }
