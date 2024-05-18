@@ -16,6 +16,7 @@ import com.waihai.usercenter.service.UserService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,7 +72,7 @@ public class TeamController {
      * @return
      */
     @GetMapping("/list")
-    public BaseResponse<List<TeamUserVO>> listTeams(@RequestBody TeamQuery teamQuery, HttpServletRequest request) {
+    public BaseResponse<List<TeamUserVO>> listTeams(@ParameterObject TeamQuery teamQuery, HttpServletRequest request) {
         if (teamQuery == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -82,7 +83,7 @@ public class TeamController {
     }
 
     @GetMapping("/list/page")
-    public BaseResponse<Page<Team>> listPageTeams(@RequestBody TeamQuery teamQuery) {
+    public BaseResponse<Page<Team>> listPageTeams(TeamQuery teamQuery) {
         if (teamQuery == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }

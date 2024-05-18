@@ -10,7 +10,6 @@ import java.util.Date;
 /**
  * 创建队伍请求体
  */
-@TableName(value ="team")
 @Data
 public class TeamAddRequest implements Serializable {
 
