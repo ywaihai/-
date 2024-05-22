@@ -11,6 +11,7 @@ import com.waihai.usercenter.model.domin.User;
 import com.waihai.usercenter.model.dto.TeamQuery;
 import com.waihai.usercenter.model.request.TeamAddRequest;
 import com.waihai.usercenter.model.request.TeamJoinRequest;
+import com.waihai.usercenter.model.request.TeamQuitRequest;
 import com.waihai.usercenter.model.request.TeamUpdateRequest;
 import com.waihai.usercenter.model.vo.TeamUserVO;
 import com.waihai.usercenter.service.TeamService;
@@ -103,8 +104,8 @@ public class TeamController {
 
     /**
      * 搜索队伍
-     *
      * @param teamQuery
+     * @param request
      * @return
      */
     @GetMapping("/list")
@@ -116,6 +117,41 @@ public class TeamController {
         boolean isAdmin = userService.isAdmin(loginUser);
         List<TeamUserVO> teamUserVOList = teamService.listTeams(teamQuery, isAdmin);
         return ResultUtils.success(teamUserVOList);
+    }
+
+    /**
+     * 退出队伍
+     * @param teamQuitRequest
+     * @param request
+     * @return
+     */
+    @GetMapping("/quit")
+    public BaseResponse<Boolean> quitTeam(@ParameterObject TeamQuitRequest teamQuitRequest, HttpServletRequest request) {
+        if (teamQuitRequest == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        User loginUser = userService.getLoginUser(request);
+        boolean result = teamService.quitTeam(teamQuitRequest, loginUser);
+        return ResultUtils.success(result);
+    }
+
+    /**
+     * 解散队伍
+     * @param id
+     * @param request
+     * @return
+     */
+    @GetMapping("/delete")
+    public BaseResponse<Boolean> deleteTeam(long id, HttpServletRequest request) {
+        if (id < 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        User loginUser = userService.getLoginUser(request);
+        boolean result = teamService.deleteTeam(id, loginUser);
+        if (!result) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "删除失败");
+        }
+        return ResultUtils.success(true);
     }
 
     @GetMapping("/list/page")

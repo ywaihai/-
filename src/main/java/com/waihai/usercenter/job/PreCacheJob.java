@@ -54,9 +54,9 @@ public class PreCacheJob {
             log.error("lock set error: ", e.getMessage());
         } finally {
             if (rlock.isHeldByCurrentThread()) {
+                rlock.unlock();
                 System.out.println("Unlock: " + Thread.currentThread().getId());
             }
-            rlock.unlock();
         }
 
 

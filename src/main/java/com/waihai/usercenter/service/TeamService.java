@@ -5,6 +5,7 @@ import com.waihai.usercenter.model.domin.Team;
 import com.waihai.usercenter.model.domin.User;
 import com.waihai.usercenter.model.dto.TeamQuery;
 import com.waihai.usercenter.model.request.TeamJoinRequest;
+import com.waihai.usercenter.model.request.TeamQuitRequest;
 import com.waihai.usercenter.model.request.TeamUpdateRequest;
 import com.waihai.usercenter.model.vo.TeamUserVO;
 
@@ -52,4 +53,20 @@ public interface TeamService extends IService<Team> {
      * @return
      */
     boolean joinTeam(TeamJoinRequest team, User loginUser);
+
+    /**
+     * 退出队伍
+     * @param teamQuitRequest
+     * @param loginUser
+     * @return
+     */
+    boolean quitTeam(TeamQuitRequest teamQuitRequest, User loginUser);
+
+    /**
+     * 解散队伍
+     * @param id
+     * @param loginUser
+     * @return
+     */
+    boolean deleteTeam(long id, User loginUser);
 }
