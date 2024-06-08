@@ -8,7 +8,7 @@ spring:
     username: root
     password: 1433223ycX@
   session:
-    timeout: 120
+    timeout: 300
     store-type: redis
 
   data:

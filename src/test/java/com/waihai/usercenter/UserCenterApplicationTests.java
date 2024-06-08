@@ -11,4 +11,9 @@ class UserCenterApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	public void test1(){
+		System.out.println(1);
+	}
+
 }

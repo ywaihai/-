@@ -10,10 +10,12 @@ import com.waihai.usercenter.exception.BusinessException;
 import com.waihai.usercenter.mapper.UserMapper;
 import com.waihai.usercenter.model.domin.User;
 import com.waihai.usercenter.service.UserService;
+import com.waihai.usercenter.utils.AlgorithmUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.math3.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
@@ -304,6 +306,70 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             throw new BusinessException(ErrorCode.NOT_LOGIN);
         }
         return (User) userObj;
+    }
+
+    /**
+     * 获取最匹配的用户
+     *
+     * @param num
+     * @param loginUser
+     * @return
+     */
+    @Override
+    public List<User> matchUsers(long num, User loginUser) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("id", "tags");//我们只查id和tags字段
+        queryWrapper.isNotNull("tags");
+        //获取标签不为空的所有用户的列表
+        List<User> userList = this.list(queryWrapper);
+        //获取当前登录用户的标签
+        String tags = loginUser.getTags();
+        //tags是json格式，现在转为java对象
+        Gson gson = new Gson();
+        List<String> tagList = gson.fromJson(tags, new TypeToken<List<String>>() {
+        }.getType());
+        //记录用户的下标和相似度
+        List<Pair<User, Long>> list = new ArrayList<>();
+        //依次计算所有用户和当前用户的相似度
+        for (int i = 0; i < userList.size(); i++) {
+            User user = userList.get(i);
+            //获取列表用户的标签
+            String userTags = user.getTags();
+            if (StringUtils.isBlank(userTags) || user.getId().equals(loginUser.getId())) {//用户没有标签或者遍历到自己，就遍历下一个用户
+                continue;
+            }
+            //将用户的标签转为java对象
+            List<String> userTagList = gson.fromJson(userTags, new TypeToken<List<String>>() {
+            }.getType());
+            //两两比较,获取相识度，相识度月底，就越匹配
+            long distance = AlgorithmUtils.minDistance(tagList, userTagList);
+            //记录
+            list.add(new Pair<>(user, distance));
+        }
+        // 按编辑距离由小到大排序,升序，编辑距离越短，匹配度越高，即相识度越高
+        List<Pair<User, Long>> topUserPairList = list.stream()
+                .sorted((a, b) -> (int) (a.getValue() - b.getValue()))
+                .limit(num)
+                .collect(Collectors.toList());
+        //从topUserPairList取出用户,这里的用户只有id和tags信息,这里已经根据相似度排好序了
+        List<Long> userIdList = topUserPairList.stream().map(pair ->
+                pair.getKey().getId()).collect(Collectors.toList());
+        //获取用户的所有信息，并进行脱敏，得到的是未排序的用户
+        // 1, 3, 2
+        // User1、User2、User3
+        // 1 => User1, 2 => User2, 3 => User3
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.in("id", userIdList);//使用in了之后就又打乱了顺序
+        Map<Long, List<User>> userIdUserListMap = this.list(userQueryWrapper).
+                stream().
+                map(this::getSafetyUser).
+                collect(Collectors.groupingBy(User::getId));
+        //重新排序
+        List<User> finalUserList = new ArrayList<>();
+        for (Long userId : userIdList) {
+            finalUserList.add(userIdUserListMap.get(userId).get(0));
+        }
+        return finalUserList;
     }
 
 }
