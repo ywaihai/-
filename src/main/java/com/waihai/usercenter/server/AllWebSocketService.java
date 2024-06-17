@@ -77,6 +77,11 @@ public class AllWebSocketService {
     }
 
 
+    /**
+     * 记录并处理收到的消息。
+     * 将消息转发给所有其他在线用户
+     * @param message
+     */
     @OnMessage
     public void onMessage(String message) {
         log.info("用户消息：" + name + ",报文：" + message);

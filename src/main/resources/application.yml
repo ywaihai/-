@@ -8,7 +8,7 @@ spring:
     username: root
     password: 1433223ycX@
   session:
-    timeout: 300
+    timeout: 86400
     store-type: redis
 
   data:
@@ -67,8 +67,8 @@ knife4j:
     language: zh_cn
   #开启生产环境屏蔽
   production: false
-  #是否启用登录认证
-  basic:
-    enable: true
-    username: waihai
-    password: 123456
+#  #是否启用登录认证
+#  basic:
+#    enable: true
+#    username: waihai
+#    password: 123456

@@ -58,7 +58,5 @@ public class PreCacheJob {
                 System.out.println("Unlock: " + Thread.currentThread().getId());
             }
         }
-
-
     }
 }

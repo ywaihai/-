@@ -331,17 +331,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         //记录用户的下标和相似度
         List<Pair<User, Long>> list = new ArrayList<>();
         //依次计算所有用户和当前用户的相似度
-        for (int i = 0; i < userList.size(); i++) {
-            User user = userList.get(i);
+        for (User user : userList) {
             //获取列表用户的标签
             String userTags = user.getTags();
-            if (StringUtils.isBlank(userTags) || user.getId().equals(loginUser.getId())) {//用户没有标签或者遍历到自己，就遍历下一个用户
+            //用户没有标签或者遍历到自己，就遍历下一个用户
+            if (StringUtils.isBlank(userTags) || user.getId().equals(loginUser.getId())) {
                 continue;
             }
             //将用户的标签转为java对象
             List<String> userTagList = gson.fromJson(userTags, new TypeToken<List<String>>() {
             }.getType());
-            //两两比较,获取相识度，相识度月底，就越匹配
+            //两两比较,获取相识度，相似度越高，就越匹配
             long distance = AlgorithmUtils.minDistance(tagList, userTagList);
             //记录
             list.add(new Pair<>(user, distance));
@@ -350,7 +350,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         List<Pair<User, Long>> topUserPairList = list.stream()
                 .sorted((a, b) -> (int) (a.getValue() - b.getValue()))
                 .limit(num)
-                .collect(Collectors.toList());
+                .toList();
         //从topUserPairList取出用户,这里的用户只有id和tags信息,这里已经根据相似度排好序了
         List<Long> userIdList = topUserPairList.stream().map(pair ->
                 pair.getKey().getId()).collect(Collectors.toList());

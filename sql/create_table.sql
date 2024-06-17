@@ -51,3 +51,15 @@ create table user_team
     isDelete   tinyint  default 0                 not null comment '是否删除'
 )
     comment '用户队伍关系';
+
+create table notice
+(
+    id         int auto_increment comment 'ID'
+        primary key,
+    title      varchar(255)                       null comment '标题',
+    content    varchar(255)                       null comment '内容',
+    createTime datetime default CURRENT_TIMESTAMP null comment '创建时间',
+    createUser varchar(255)                       null comment '创建人'
+)
+    comment '公告';
+

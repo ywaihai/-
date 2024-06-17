@@ -7,7 +7,9 @@ import com.waihai.usercenter.common.BaseResponse;
 import com.waihai.usercenter.common.ErrorCode;
 import com.waihai.usercenter.common.ResultUtils;
 import com.waihai.usercenter.exception.BusinessException;
+import com.waihai.usercenter.model.domin.Team;
 import com.waihai.usercenter.model.domin.User;
+import com.waihai.usercenter.model.dto.UserQuery;
 import com.waihai.usercenter.model.request.UserLoginRequest;
 import com.waihai.usercenter.model.request.UserRegisterRequest;
 import com.waihai.usercenter.service.UserService;
@@ -15,6 +17,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.util.CollectionUtils;
@@ -28,7 +31,6 @@ import static com.waihai.usercenter.contant.UserConstant.USER_LOGIN_STATE;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = {"http://localhost:5137/"})
 @Slf4j
 public class UserController {
 
@@ -237,5 +239,36 @@ public class UserController {
         return ResultUtils.success(result);
     }
 
+    @GetMapping("/list/userPage")
+    public BaseResponse<Page<User>> listUsers(UserQuery userQuery) {
+        if (userQuery == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        User user = new User();
+        BeanUtils.copyProperties(user, userQuery);
+        Page<User> page = new Page<>(userQuery.getPageNum(), userQuery.getPageSize());
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("isDelete", 0);
+        queryWrapper.eq("userRole", 0);
+
+        Page<User> resultPage = userService.page(page, queryWrapper);
+        return ResultUtils.success(resultPage);
+    }
+
+    @GetMapping("/list/adminPage")
+    public BaseResponse<Page<User>> listAdmins(UserQuery userQuery) {
+        if (userQuery == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        User user = new User();
+        BeanUtils.copyProperties(user, userQuery);
+        Page<User> page = new Page<>(userQuery.getPageNum(), userQuery.getPageSize());
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("isDelete", 0);
+        queryWrapper.eq("userRole", 1);
+
+        Page<User> resultPage = userService.page(page, queryWrapper);
+        return ResultUtils.success(resultPage);
+    }
 
 }

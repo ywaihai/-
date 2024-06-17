@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.waihai.usercenter.common.ErrorCode;
+import com.waihai.usercenter.common.ResultUtils;
 import com.waihai.usercenter.exception.BusinessException;
 import com.waihai.usercenter.mapper.TeamMapper;
 import com.waihai.usercenter.model.domin.Team;

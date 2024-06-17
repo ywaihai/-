@@ -31,7 +31,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/team")
-@CrossOrigin(origins = {"http://localhost:5137/"})
 @Slf4j
 public class TeamController {
 
@@ -121,6 +120,9 @@ public class TeamController {
         }
         boolean isAdmin = userService.isAdmin(request);
         List<TeamUserVO> teamList = teamService.listTeams(teamQuery, isAdmin);
+        if (teamList == null || teamList.size() == 0) {
+            return ResultUtils.success(new ArrayList<>());
+        }
         /**
          * 这里新增一个逻辑，返回用户已加入的队伍列表，对接用户退出队伍的功能
          */
@@ -276,6 +278,7 @@ public class TeamController {
         BeanUtils.copyProperties(team, teamQuery);
         Page<Team> page = new Page<>(teamQuery.getPageNum(), teamQuery.getPageSize());
         QueryWrapper<Team> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("isDelete", 0);
 
         Page<Team> resultPage = teamService.page(page, queryWrapper);
         return ResultUtils.success(resultPage);
